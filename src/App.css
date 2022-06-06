@@ -1,14 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Yeon+Sung&display=swap');
 
-$mainFont: 'Nanum Pen Script', cursive;
-$subFont: 'Yeon Sung', cursive;
-
 body {
 	background-color: #f6f6f6;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: $mainFont;
+	font-family: 'Nanum Pen Script', cursive;
 	min-height: 100vh;
 	margin: 0;
 }
@@ -48,7 +45,7 @@ body {
 }
 
 .MyButton_default {
-	// background-color: #ececec;
+	background-color: #ececec;
 	color: #000;
 }
 
@@ -69,28 +66,28 @@ header {
 	display: flex;
 	align-items: center;
 	border-bottom: 0.1rem solid #e2e2e2;
+}
 
-	div {
-		display: flex;
-	}
+header > div {
+	display: flex;
+}
 
-	.head_text {
-		width: 50%;
-		font-size: 2.5rem;
-		justify-content: center;
-	}
+.head_text {
+	width: 50%;
+	font-size: 2.5rem;
+	justify-content: center;
+}
 
-	.head_btn_left {
-		width: 25%;
-		justify-content: start;
-	}
+.head_btn_left {
+	width: 25%;
+	justify-content: start;
+}
 
-	.head_btn_right {
-		width: 25%;
-		justify-content: end;
-	}
+.head_btn_right {
+	width: 25%;
+	justify-content: end;
+}
 
-	button {
-		font-family: $mainFont;
-	}
+button {
+	font-family: 'Nanum Pen Script', cursive;
 }

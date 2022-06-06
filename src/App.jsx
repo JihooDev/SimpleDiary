@@ -1,5 +1,5 @@
-import React from 'react';
-import './App.scss';
+import React, { useReducer, useRef } from 'react';
+import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from './pages/Home';
@@ -11,57 +11,125 @@ import Diary from './pages/Diary';
 import MyButton from './components/MyButton';
 import MyHeader from './components/MyHeader';
 
+const reducer = (state, action) => {
+	let newState = [];
+	switch (action.type) {
+		case 'INIT': {
+			return action.data;
+		}
+		case 'CREATE': {
+			const newItem = {
+				...action.data,
+			};
+			newState = [newItem, ...state];
+			break;
+		}
+		case 'REMOVE': {
+			newState = state.filter(it => it.it !== action.targetId);
+			break;
+		}
+		case 'EDIT': {
+			newState = state.map(it => (it.id === action.data.id ? { ...action.data } : it));
+			break;
+		}
+		default:
+			return state;
+	}
+	return newState;
+};
+
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext();
+
 export default function App() {
+	const dummyData = [
+		{
+			id: 1,
+			emotion: 1,
+			content: '오늘의 일기 1',
+			date: 1654511490482,
+		},
+		{
+			id: 2,
+			emotion: 2,
+			content: '오늘의 일기 2',
+			date: 1654511490484,
+		},
+		{
+			id: 3,
+			emotion: 3,
+			content: '오늘의 일기 3',
+			date: 1654511490485,
+		},
+		{
+			id: 4,
+			emotion: 4,
+			content: '오늘의 일기 4',
+			date: 1654511490486,
+		},
+		{
+			id: 5,
+			emotion: 5,
+			content: '오늘의 일기 5',
+			date: 16545114904867,
+		},
+	];
+
+	const [data, dispatch] = useReducer(reducer, dummyData);
+
+	const dataId = useRef(0);
+
+	// **CREATE
+	const onCreate = (date, content, emotion) => {
+		dispatch({
+			type: 'CREATE',
+			data: {
+				id: dataId.current,
+				date: new Date(date).getTime(),
+				content,
+				emotion,
+			},
+		});
+		dataId.current += 1;
+	};
+
+	//**  REMOVE
+	const onRemove = targetId => {
+		dispatch({ type: 'REMOVE', targetId });
+	};
+
+	//** EDIT
+	const onEdit = (targetId, date, content, emotion) => {
+		dispatch({
+			type: 'EDIT',
+			data: {
+				id: targetId,
+				date: new Date(date).getTime(),
+				content,
+				emotion,
+			},
+		});
+	};
 	return (
-		<BrowserRouter>
-			<div className="App">
-				<MyHeader
-					headText={'App'}
-					leftChild={
-						<MyButton
-							text={'왼쪽 버튼'}
-							onClick={() => {
-								alert('왼쪽 버튼');
-							}}
-						/>
-					}
-					rightChild={
-						<MyButton
-							text={'오른쪽 버튼'}
-							onClick={() => {
-								alert('오른쪽 버튼');
-							}}
-						/>
-					}
-				/>
-				<MyButton
-					text={'버튼'}
-					onClick={() => {
-						alert('버튼');
-					}}
-					type={'positive'}
-				/>
-				<MyButton
-					text={'버튼'}
-					onClick={() => {
-						alert('버튼');
-					}}
-					type={'nagative'}
-				/>
-				<MyButton
-					text={'버튼'}
-					onClick={() => {
-						alert('버튼');
-					}}
-					type={'default'}
-				/>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/new" element={<New />} />
-					<Route path="/edit" element={<Edit />} />
-					<Route path="/diary/:id" element={<Diary />} />
-				</Routes>
-			</div>
-		</BrowserRouter>
+		<DiaryStateContext.Provider value={data}>
+			<DiaryDispatchContext.Provider
+				value={{
+					onCreate,
+					onEdit,
+					onRemove,
+				}}
+			>
+				<BrowserRouter>
+					<div className="App">
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/new" element={<New />} />
+							<Route path="/edit" element={<Edit />} />
+							<Route path="/diary/:id" element={<Diary />} />
+						</Routes>
+					</div>
+				</BrowserRouter>
+			</DiaryDispatchContext.Provider>
+		</DiaryStateContext.Provider>
 	);
 }
