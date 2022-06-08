@@ -46,32 +46,32 @@ export default function App() {
 		{
 			id: 1,
 			emotion: 1,
-			content: '오늘의 일기 1',
+			content: '오늘의 일기',
 			date: 1654511490482,
 		},
 		{
 			id: 2,
 			emotion: 2,
-			content: '오늘의 일기 2',
+			content: '오늘의 일기',
 			date: 1654511490484,
 		},
 		{
 			id: 3,
 			emotion: 3,
-			content: '오늘의 일기 3',
+			content: '오늘의 일기',
 			date: 1654511490485,
 		},
 		{
 			id: 4,
 			emotion: 4,
-			content: '오늘의 일기 4',
+			content: '오늘의 일기',
 			date: 1654511490486,
 		},
 		{
 			id: 5,
 			emotion: 5,
-			content: '오늘의 일기 5',
-			date: 16545114904867,
+			content: '오늘의 일기',
+			date: 1654511490481,
 		},
 	];
 
