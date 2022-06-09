@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DiaryDispatchContext } from '../App';
 import MyButton from './../components/MyButton';
@@ -7,10 +7,11 @@ import DiaryList from './DiaryList';
 import EmotionItem from './EmotionItem';
 import { getStringDate } from '../util/date';
 import { emotionList } from '../util/emotion_list';
+import Modal from '../pages/Modal';
 
 export default function DiaryEditor({ isEdit, originData }) {
 	const contentRef = useRef();
-	const [content, setContent] = useState();
+	const [content, setContent] = useState('');
 
 	const [date, setDate] = useState(getStringDate(new Date()));
 
@@ -18,11 +19,13 @@ export default function DiaryEditor({ isEdit, originData }) {
 
 	const [emotion, setEmotion] = useState(3);
 
-	const handleClickEmote = emotion => {
-		setEmotion(emotion);
-	};
+	const [modal, setModal] = useState(false);
 
-	const { onCreate, onEdit } = useContext(DiaryDispatchContext);
+	const handleClickEmote = useCallback(emotion => {
+		setEmotion(emotion);
+	}, []);
+
+	const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
 
 	const handleSubmit = () => {
 		if (content.length < 1) {
@@ -36,7 +39,12 @@ export default function DiaryEditor({ isEdit, originData }) {
 			onEdit(originData.id, date, content, emotion);
 		}
 
-		if (window.confirm(isEdit ? '일기를 수정하시겠습니까?' : '새로운 일기를 등록하시겠습니까?')) navigate('/', { replace: true });
+		navigate('/', { replace: true });
+	};
+
+	const handleRemove = () => {
+		onRemove(originData.id);
+		navigate('/', { replace: true });
 	};
 
 	useEffect(() => {
@@ -59,6 +67,7 @@ export default function DiaryEditor({ isEdit, originData }) {
 						}}
 					/>
 				}
+				rightChild={isEdit && <MyButton text={'삭제하기'} type={'nagative'} onClick={handleRemove} />}
 			/>
 			<div>
 				<section>
@@ -96,10 +105,17 @@ export default function DiaryEditor({ isEdit, originData }) {
 								navigate(-1);
 							}}
 						/>
-						<MyButton text={'작성완료'} type={'positive'} onClick={handleSubmit} />
+						<MyButton
+							text={isEdit ? '수정하기' : '작성하기'}
+							type={'positive'}
+							onClick={() => {
+								setModal(true);
+							}}
+						/>
 					</div>
 				</section>
 			</div>
+			{modal ? <Modal text={isEdit ? '수정' : '작성'} onClick={handleSubmit} setModal={setModal} /> : null}
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DiaryStateContext } from '../App';
+import { DiaryDispatchContext, DiaryStateContext } from '../App';
 import MyButton from '../components/MyButton';
 import MyHeader from '../components/MyHeader';
 import { getStringDate } from '../util/date';
@@ -32,8 +32,6 @@ export default function Diary() {
 		return <div className="DiaryPage">로딩 중 입니다</div>;
 	} else {
 		const curEmotionData = emotionList.find(it => parseInt(it.emotion_id) === parseInt(data.emotion));
-
-		console.log(curEmotionData);
 
 		return (
 			<div className="DiaryPage">

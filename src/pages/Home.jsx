@@ -14,15 +14,12 @@ export default function Home() {
 	useEffect(() => {
 		if (diaryList.length >= 1) {
 			const firstDay = new Date(curDate.getFullYear(), curDate.getMonth(), 1).getTime();
-			const lastDay = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0);
+			const lastDay = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0, 23, 59, 59);
 
 			setData(diaryList.filter(it => firstDay <= it.date && it.date <= lastDay));
 		}
 	}, [diaryList, curDate]);
 
-	useEffect(() => {
-		console.log(data);
-	}, [data]);
 	const increaseMonth = () => {
 		setCurDate(new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate()));
 	};
@@ -31,13 +28,14 @@ export default function Home() {
 		setCurDate(new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate()));
 	};
 	return (
-		<div>
+		<div className="Home">
 			<MyHeader
 				headText={headText}
 				leftChild={<MyButton text={'<'} onClick={decreaseMonth} />}
 				rightChild={<MyButton text={'>'} onClick={increaseMonth} />}
 			/>
 			<DiaryList diaryList={data} />
+			<h1>{data.length === 0 ? '새로운 일기를 작성 해주세요!' : ''}</h1>
 		</div>
 	);
 }
