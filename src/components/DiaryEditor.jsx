@@ -21,6 +21,8 @@ export default function DiaryEditor({ isEdit, originData }) {
 
 	const [modal, setModal] = useState(false);
 
+	const [removeModal, setRemoveModal] = useState(false);
+
 	const handleClickEmote = useCallback(emotion => {
 		setEmotion(emotion);
 	}, []);
@@ -67,7 +69,17 @@ export default function DiaryEditor({ isEdit, originData }) {
 						}}
 					/>
 				}
-				rightChild={isEdit && <MyButton text={'삭제하기'} type={'nagative'} onClick={handleRemove} />}
+				rightChild={
+					isEdit && (
+						<MyButton
+							text={'삭제하기'}
+							type={'nagative'}
+							onClick={() => {
+								setRemoveModal(true);
+							}}
+						/>
+					)
+				}
 			/>
 			<div>
 				<section>
@@ -116,6 +128,7 @@ export default function DiaryEditor({ isEdit, originData }) {
 				</section>
 			</div>
 			{modal ? <Modal text={isEdit ? '수정' : '작성'} onClick={handleSubmit} setModal={setModal} /> : null}
+			{removeModal ? <Modal text={'삭제'} onClick={handleRemove} setModal={setRemoveModal} /> : null}
 		</div>
 	);
 }

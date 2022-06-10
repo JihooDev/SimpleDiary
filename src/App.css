@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Yeon+Sung&display=swap');
 
 body {
-	background-color: #f6f6f6;
+	background-color: #feca57;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: 'Nanum Pen Script', cursive;
+	font-family: 'Gowun Dodum', sans-serif;
 	min-height: 100vh;
 	margin: 0;
 }
@@ -19,6 +19,11 @@ body {
 @media (max-width: 65rem) {
 	.App {
 		width: 90vw;
+	}
+
+	.Home > h1 {
+		padding: 2rem;
+		text-align: center;
 	}
 }
 
